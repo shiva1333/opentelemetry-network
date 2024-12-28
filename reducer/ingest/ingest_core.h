@@ -10,6 +10,7 @@
 
 #include <reducer/util/index_dumper.h>
 
+#include <absl/base/thread_annotations.h>  // For GUARDED_BY()
 #include <platform/types.h>
 #include <scheduling/interval_scheduler.h>
 

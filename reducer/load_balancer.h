@@ -7,6 +7,7 @@
 
 #include <set>
 
+#include <absl/base/thread_annotations.h>  // For GUARDED_BY()
 #include <absl/container/flat_hash_map.h>
 #include <absl/synchronization/mutex.h>
 #include <absl/types/span.h>
@@ -41,8 +42,8 @@ private:
   using EntrySet = std::multiset<Entry>;
   using EntryIterator = typename EntrySet::const_iterator;
 
-  EntrySet entries_ GUARDED_BY(mu_);
-  absl::flat_hash_map<T, EntryIterator> elem_to_entry_it_ GUARDED_BY(mu_);
+  EntrySet entries_;
+  absl::flat_hash_map<T, EntryIterator> elem_to_entry_it_;
   mutable absl::Mutex mu_;
 };
 

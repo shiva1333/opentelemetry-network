@@ -9,6 +9,7 @@
 #include <reducer/load_balancer.h>
 #include <reducer/prometheus_handler.h>
 
+#include <absl/base/thread_annotations.h>  // For GUARDED_BY()
 #include <generated/ebpf_net/ingest/index.h>
 
 #include <uv.h>
@@ -108,7 +109,7 @@ private:
   std::vector<std::unique_ptr<IngestWorker>> workers_;
   std::unique_ptr<LoadBalancer<Worker *>> worker_balancer_;
 
-  Stats stats_ GUARDED_BY(stats_mu_);
+  Stats stats_ ;
   mutable absl::Mutex stats_mu_;
 };
 

@@ -71,26 +71,24 @@ function (build_protobuf NAME)
   endif()
 
   if (DEFINED ARG_GO)
-    list(
-      APPEND
-      PROTOBUF_ARGS
-        --go_out="plugins=grpc:${GO_PATH_SRC}"
+    list(APPEND PROTOBUF_ARGS
+            --go_out="${GO_PATH_SRC}"        # Generates the base .pb.go file
+            --go-grpc_out="${GO_PATH_SRC}"   # Generates the .pb.grpc.go file
     )
 
-    add_dependencies(
-      "${TARGET}"
-        "${ARG_GO}-go-module"
-    )
-
+    # If you want to include grpc-gateway generation:
     if (ARG_GRPC)
-      list(
-        APPEND
-        PROTOBUF_ARGS
-          -I"${GO_PROTOBUF_ANNOTATIONS_DIR}"
-          -I"${GO_PROTOBUF_GOOGLEAPIS_DIR}"
-          --grpc-gateway_out="logtostderr=true:${GO_PATH_SRC}"
+      list(APPEND PROTOBUF_ARGS
+              -I"${GO_PROTOBUF_ANNOTATIONS_DIR}"
+              -I"${GO_PROTOBUF_GOOGLEAPIS_DIR}"
+              --grpc-gateway_out="logtostderr=true:${GO_PATH_SRC}"
       )
     endif()
+
+    add_dependencies(
+            "${TARGET}"
+            "${ARG_GO}-go-module"
+    )
   endif()
 
   list(
